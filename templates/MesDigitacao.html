@@ -10,23 +10,25 @@
 {% endblock %}
 
 {% block content %}
+<div>
 
-{% if resultado %}
-<div class="alert alert-success alert-dismissible fade show ml-5" style="width: 20%;">
-    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-    <strong>Sucesso!</strong> Relato feito com sucesso!.
-</div>
+    {% if resultado %}
+    <div class="alert alert-success alert-dismissible fade show ml-5" style="width: 20%;">
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        <strong>Sucesso!</strong> Relato feito com sucesso!.
+    </div>
 
-{% endif %}
+    {% endif %}
 
 
-<div class="container" style="width: 50%;">
-    <h2 class="fw-bold">Formulário para relatar inconsistência na coleta automática para o MES.</h2>
-    <hr>
-    <form method="POST" class="my-class">{% csrf_token %}
-        {{ form|crispy }}
-        <button type="submit" class="btn btn-primary ">Enviar</button>
-    </form>
+    <div class="container" style="width: 50%;">
+        <h2 class="fw-bold">Formulário para relatar inconsistência na coleta automática para o MES.</h2>
+        <hr>
+        <form method="POST" class="my-class">{% csrf_token %}
+            {{ form|crispy }}
+            <button type="submit" class="btn btn-primary ">Enviar</button>
+        </form>
 
+    </div>
 </div>
 {% endblock %}
