@@ -80,8 +80,9 @@ JAZZMIN_SETTINGS = {
         "django_celery_beat.SolarSchedule",
         "NR10.Nr10",
         "NR10.Nr10Complementar",
-        "NR10.Asu"
-        "NR10.Autorizações"
+        "NR10.Asu",
+        "NR10.Autorizacao",
+        "NR10.Luva",
         ],
 
     # List of apps (and/or models) to base side menu ordering off of (does not need to contain all apps/models)
@@ -116,8 +117,12 @@ JAZZMIN_SETTINGS = {
         "Core.Conversa": "fa fa-comment",
         "Core.Alerta": "fa fa-bell",
         "treinamento.Aula": "fa fa-landmark",
+        "treinamento.Referencia": "fa fa-bookmark",
         "Estoque.Manutenção": "fa fa-wrench",
         "Estoque.Equipamento": "fa fa-box",
+        "NR10.Eletricista": "fas fa-bolt",
+        "saq.DigitacaoProblema": "fas fa-comment",
+
     },
 
     # Icons that are used when one is not manually specified

@@ -12,6 +12,23 @@ class AutoDateTimeField(models.DateTimeField):
         return tz.now()
 
 
+def htmlExpiracao(delta):
+    if int(delta) > 0:
+        return format_html(
+            f"""<div
+        style="background-color: #319c35; border:#319c35 ;color: rgb(255, 255, 255); border-radius: 5px;
+        padding:5px"
+        > Expira em {int(delta)} dias</div>"""
+        )
+    else:
+        return format_html(
+            f"""<div
+        style="background-color: #a71c1c; border:#a71c1c ;color: rgb(255, 255, 255); border-radius: 5px;
+        padding:5px"
+        > Expirado à {int(delta) * -1} dias </div>"""
+        )
+
+
 class Eletricista(models.Model):
     STATUS = (
         ("Reparada", "Reparada"),
@@ -21,6 +38,9 @@ class Eletricista(models.Model):
 
     id = models.AutoField(primary_key=True)
     nome = models.CharField(max_length=15, blank=True, null=True)  # string 15
+    id_ambev = models.CharField(
+        "ID Ambev", max_length=15, blank=True, null=True
+    )  # string 15
     area = models.ForeignKey(
         "utils.Area",
         on_delete=models.CASCADE,
@@ -46,63 +66,55 @@ class Eletricista(models.Model):
     @admin.display(description="Asu")
     def expire_asu(self):
         last_asu = Asu.objects.filter(dono=self.id).latest("data")
-        delta = ((last_asu.data + datetime.timedelta(days=last_asu.expiracao)) - datetime.date.today()).days
-        if int(delta)>0:
-            return format_html(f'''<div
-            style="background-color: #319c35; border:#319c35 ;color: rgb(255, 255, 255); border-radius: 5px;
-            padding:5px"
-            > Expira em {int(delta)} dias</div>''')
-        else:
-            return format_html(f'''<div
-            style="background-color: #a71c1c; border:#a71c1c ;color: rgb(255, 255, 255); border-radius: 5px;
-            padding:5px"
-            > Expirado à {int(delta) * -1} dias </div>''')
-            
+        delta = (
+            (last_asu.data + datetime.timedelta(days=last_asu.expiracao))
+            - datetime.date.today()
+        ).days
+        return htmlExpiracao(delta)
+
     @admin.display(description="Nr10")
     def expire_Nr10(self):
         last_Nr10 = Nr10.objects.filter(dono=self.id).latest("data")
-        delta = ((last_Nr10.data + datetime.timedelta(days=last_Nr10.expiracao)) - datetime.date.today()).days
-        if int(delta)>0:
-            return format_html(f'''<div
-            style="background-color: #319c35; border:#319c35 ;color: rgb(255, 255, 255); border-radius: 5px;
-            padding:5px"
-            > Expira em {int(delta)} dias</div>''')
-        else:
-            return format_html(f'''<div
-            style="background-color: #a71c1c; border:#a71c1c ;color: rgb(255, 255, 255); border-radius: 5px;
-            padding:5px"
-            > Expirado à {int(delta) * -1} dias </div>''')
+        delta = (
+            (last_Nr10.data + datetime.timedelta(days=last_Nr10.expiracao))
+            - datetime.date.today()
+        ).days
+        return htmlExpiracao(delta)
+
 
     @admin.display(description="Nr10Complementar")
     def expire_Nr10Complementar(self):
-        last_Nr10Complementar = Nr10Complementar.objects.filter(dono=self.id).latest("data")
-        delta = ((last_Nr10Complementar.data + datetime.timedelta(days=last_Nr10Complementar.expiracao)) - datetime.date.today()).days
-        if int(delta)>0:
-            return format_html(f'''<div
-            style="background-color: #319c35; border:#319c35 ;color: rgb(255, 255, 255); border-radius: 5px;
-            padding:5px"
-            > Expira em {int(delta)} dias</div>''')
-        else:
-            return format_html(f'''<div
-            style="background-color: #a71c1c; border:#a71c1c ;color: rgb(255, 255, 255); border-radius: 5px;
-            padding:5px"
-            > Expirado à {int(delta) * -1} dias </div>''')   
+        last_Nr10Complementar = Nr10Complementar.objects.filter(dono=self.id).latest(
+            "data"
+        )
+        delta = (
+            (
+                last_Nr10Complementar.data
+                + datetime.timedelta(days=last_Nr10Complementar.expiracao)
+            )
+            - datetime.date.today()
+        ).days
+        return htmlExpiracao(delta)
 
-    @admin.display(description="Autorizacao")
+    @admin.display(description="Luva")
+    def expire_Luva(self):
+        last_Luva = Luva.objects.filter(dono=self.id).latest("ultimo_exame")
+        delta = (
+            (last_Luva.ultimo_exame + datetime.timedelta(days=last_Luva.expiracao))
+            - datetime.date.today()
+        ).days
+        return htmlExpiracao(delta)
+
     def expire_Autorizacao(self):
         last_Autorizacao = Autorizacao.objects.filter(dono=self.id).latest("data")
-        delta = ((last_Autorizacao.data + datetime.timedelta(days=last_Autorizacao.expiracao)) - datetime.date.today()).days
-        if int(delta)>0:
-            return format_html(f'''<div
-            style="background-color: #319c35; border:#319c35 ;color: rgb(255, 255, 255); border-radius: 5px;
-            padding:5px"
-            > Expira em {int(delta)} dias</div>''')
-        else:
-            return format_html(f'''<div
-            style="background-color: #a71c1c; border:#a71c1c ;color: rgb(255, 255, 255); border-radius: 5px;
-            padding:5px"
-            > Expirado à {int(delta) * -1} dias </div>''')   
-
+        delta = (
+            (
+                last_Autorizacao.data
+                + datetime.timedelta(days=last_Autorizacao.expiracao)
+            )
+            - datetime.date.today()
+        ).days
+        return htmlExpiracao(delta)
 
     @admin.display(description="Nivel Autorização")
     def autorizacao(self):
@@ -118,7 +130,7 @@ class Nr10(models.Model):
 
     @property
     def expiracao(self):
-        dias_expiracao = 365 *2
+        dias_expiracao = 365 * 2
         return dias_expiracao
 
     class Meta:
@@ -140,7 +152,7 @@ class Nr10Complementar(models.Model):
 
     @property
     def expiracao(self):
-        dias_expiracao = 365 *2
+        dias_expiracao = 365 * 2
         return dias_expiracao
 
     class Meta:
@@ -162,7 +174,6 @@ class Asu(models.Model):
     def expiracao(self):
         dias_expiracao = 365
         return dias_expiracao
-
 
     class Meta:
         verbose_name = "ASU"
@@ -204,3 +215,26 @@ class Autorizacao(models.Model):
 
     def __str__(self):
         return self.nivel
+
+
+class Luva(models.Model):
+    LADO = (
+        ("Esquerda", "Esquerda"),
+        ("Direita", "Direita"),
+    )
+    STATUS = ((True, "OK"), (False, "Inrregular"))
+
+    id = models.AutoField(primary_key=True)
+    dono = models.ForeignKey(Eletricista, related_name="Luva", on_delete=models.CASCADE)
+    n_serie = models.CharField("Nº de Série", max_length=20, blank=True, null=True)
+    lado = models.CharField(default="Esquerda", max_length=20, choices=LADO)
+    status_exame = models.BooleanField("Status do Exame", editable=True, choices=STATUS)
+    ultimo_exame = models.DateField()
+
+    @property
+    def expiracao(self):
+        dias_expiracao = 168
+        return dias_expiracao
+
+    def __str__(self):
+        return str(self.dono)

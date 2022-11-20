@@ -51,6 +51,8 @@ INSTALLED_APPS = [
     "import_export",
     "rangefilter",
     'crispy_forms',
+    'fontawesomefree',
+
 
 ]
 
