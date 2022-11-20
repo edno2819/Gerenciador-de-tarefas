@@ -14,7 +14,7 @@ class DigitacaoProblema(models.Model):
         "utils.Area", on_delete=models.CASCADE, blank=True, null=True
     )    
     item = models.CharField(max_length=80, blank=False, null=False)
-    descricao = models.CharField(default=" ", max_length=1024, blank=True)
+    descricao = models.TextField(default=" ", max_length=1024, blank=True)
     create_at = AutoDateTimeField(default=timezone.now, editable=False)
 
     def __str__(self):

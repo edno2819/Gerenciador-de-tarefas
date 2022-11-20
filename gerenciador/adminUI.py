@@ -38,7 +38,7 @@ JAZZMIN_SETTINGS = {
     "topmenu_links": [
 
         # Url that gets reversed (Permissions can be added)
-        {"name": "Home",  "url": "admin:index",
+        {"name": "Home",  "url": "/",
             "permissions": ["auth.view_user"]},
 
         # external url that opens in a new window (Permissions can be added)
@@ -81,7 +81,7 @@ JAZZMIN_SETTINGS = {
         "NR10.Nr10",
         "NR10.Nr10Complementar",
         "NR10.Asu"
-
+        "NR10.Autorizações"
         ],
 
     # List of apps (and/or models) to base side menu ordering off of (does not need to contain all apps/models)
