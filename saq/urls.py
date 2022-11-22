@@ -3,4 +3,5 @@ from saq.views import *
 
 urlpatterns = [
     path('mes/', FormSaq ,name="saq"),
+    path('coletas/', coletas ,name="coletas"),
 ]
